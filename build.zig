@@ -1,8 +1,13 @@
 const std = @import("std");
 
 pub fn build(b: *std.Build) void {
+    const target = b.standardTargetOptions(.{});
+    const optimize = b.standardOptimizeOption(.{});
+
     const pal = b.addModule("pal", .{
         .root_source_file = b.path("lib.zig"),
+        .target = target,
+        .optimize = optimize,
     });
 
     const test_step = b.step("test", "Run unit tests");
@@ -10,6 +15,8 @@ pub fn build(b: *std.Build) void {
     const lib_unit_tests = b.addTest(.{
         .name = "lib unit tests",
         .root_source_file = b.path("lib.zig"),
+        .target = target,
+        .optimize = optimize,
     });
     const run_lib_unit_tests = b.addRunArtifact(lib_unit_tests);
     test_step.dependOn(&run_lib_unit_tests.step);
@@ -17,6 +24,8 @@ pub fn build(b: *std.Build) void {
     const real_life_tests = b.addTest(.{
         .name = "real_life tests",
         .root_source_file = b.path("test/root.zig"),
+        .target = target,
+        .optimize = .Debug,
     });
     real_life_tests.root_module.addImport("pal", pal);
     const run_real_life_tests = b.addRunArtifact(real_life_tests);

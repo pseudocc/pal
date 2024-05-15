@@ -258,14 +258,20 @@ pub fn parse(comptime T: type, raw: []const u8, allocator: Allocator) ParseError
                 return @as([*]align(ptr.alignment) ptr.child, @ptrFromInt(p))[0..0];
             }
 
-            const n_items = @constCast(&splitRawArray(raw)).count();
+            var lines = splitRawArray(raw);
+            const n_items = lines.count();
+
             const container: []ptr.child = if (@inComptime()) z: {
-                var items: [n_items]T = undefined;
+                var items: [n_items]ptr.child = undefined;
                 break :z &items;
             } else try allocator.alloc(ptr.child, n_items);
 
             try parseSlices(ptr.child, raw, container, allocator);
-            return container;
+            if (@inComptime()) {
+                const final = container[0..n_items].*;
+                return &final;
+            }
+            return @as(T, @ptrCast(container));
         },
         else => @compileError("Unsupported type: " ++ @typeName(T)),
     }

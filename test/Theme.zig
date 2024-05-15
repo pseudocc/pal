@@ -25,6 +25,7 @@ pub const Color = union(enum) {
 
 background: ?Color,
 foreground: Color,
+palette: []const Color,
 
 const Theme = @This();
 pub const default = pal.embed(Theme, @embedFile("theme.conf"));
@@ -35,6 +36,7 @@ test Theme {
     try testing.expectEqual(42, default.foreground.rgb[0]);
     try testing.expectEqual(76, default.foreground.rgb[1]);
     try testing.expectEqual(97, default.foreground.rgb[2]);
+    try testing.expectEqual(5, default.palette.len);
 
     var context = try pal.string(Theme, @embedFile("theme.override.conf"), testing.allocator);
     defer context.deinit();

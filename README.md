@@ -45,7 +45,7 @@ defer context.deinit();
 const config = context.instance;
 
 var context = pal.ParseContext(Config).init(allocator);
-try context.deinit();
+defer context.deinit();
 try context.file("/home/user/some.conf");
 try context.string("age 1");
 ```

@@ -31,9 +31,9 @@ gender: Gender,
 age: u8,
 
 pub const default = pal.embed(Config,
-    \\name      nobody,
-    \\gender    other(unknown),
-    \\age       0,
+    \\name      nobody
+    \\gender    other(unknown)
+    \\age       0
 );
 ```
 And of course, you can use `@embedFile` to load configurations from a file.

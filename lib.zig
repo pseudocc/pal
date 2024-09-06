@@ -27,7 +27,7 @@ const ParseStructError = error{
     InvalidField,
     MissingRequiredField,
 };
-const ParseError = ParseFloatError || ParseIntError || ParseBoolError || ParseEnumError || ParseTaggedUnionError || ParseStructError || Allocator.Error || Dir.OpenError;
+pub const ParseError = ParseFloatError || ParseIntError || ParseBoolError || ParseEnumError || ParseTaggedUnionError || ParseStructError || Allocator.Error || Dir.OpenError;
 
 const RawArrayIterator = struct {
     const delimiter = ',';
